@@ -1,0 +1,38 @@
+apiVersion: 1
+kind: Deployment
+metadata:
+  name: premier-deploiement
+  labels:
+    app: front
+    test: test
+  annotations:
+    fluxcd.io/tag.example-app: semver:~1.0
+    fluxcd.io/automated: 'true'
+spec:
+  selector:
+    matchLabels:
+      app: front
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app: front
+    spec:
+      containers:
+      - name: front
+        image: 321ngo/test:1.0.0
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 4242
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "10m"
+          limits:
+            memory: "256Mi"
+            cpu: "500m"

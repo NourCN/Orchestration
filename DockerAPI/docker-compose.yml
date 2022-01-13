@@ -1,0 +1,26 @@
+version: '3.0'
+services:
+    front:
+        build:
+            context: ./front
+            dockerfile: Dockerfile
+        ports:
+            - "3000:3000"
+    api:
+        build:
+            context: ./node-api
+            dockerfile: Dockerfile
+        ports:
+            - "4242:4242"
+        expose:
+            - "4242-4242"
+        links:
+            - mongo
+    mongo:
+        image: mongo:4.2
+        ports:
+            - "27017:27017"
+        expose:
+            - "27017-27019"
+        volumes:
+            - ./node-api/data:/data/db
